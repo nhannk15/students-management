@@ -45,4 +45,5 @@ func ReadString(message string) string {
 func PauseProgram() {
 	fmt.Printf("Press 'Enter' to continue...")
 	fmt.Scanf("%s")
+	fmt.Print("\033[H\033[2J")
 }

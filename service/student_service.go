@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"nhannkl/demo-golang/model/student"
 	"nhannkl/demo-golang/utils"
+	"slices"
 	"strconv"
 )
 
@@ -28,7 +29,7 @@ func AddStudent() {
 	}
 
 	studentList = append(studentList, newStudent)
-	fmt.Println("Student added")
+	fmt.Print("Student added. ")
 
 	utils.PauseProgram()
 }
@@ -50,5 +51,57 @@ func ListStudent() {
 		)
 	}
 
+	utils.PauseProgram()
+}
+
+func UpdateStudent() {
+	for {
+		var id int = utils.ReadInt("Enter the student id you want to update: ")
+		var index int = slices.IndexFunc(studentList, func(student student.Student) bool {
+			return student.Id == id
+		})
+		if index == -1 {
+			fmt.Println("The student you want does not exist")
+		} else {
+			var student *student.Student = &studentList[index]
+			var temp string
+			fmt.Println("Press 'Enter' for keeping the curent data...")
+			temp = utils.ReadString("Enter name (" + student.Name + "): ")
+			if temp != "" {
+				(*student).Name = temp
+			} else {
+				fmt.Println("Kept...")
+			}
+
+			temp = utils.ReadString("Enter class (" + student.ClassName + "): ")
+			if temp != "" {
+				(*student).ClassName = temp
+			} else {
+				fmt.Println("Kept...")
+			}
+
+			for i := 0; i < len(student.Grades); i++ {
+				fmt.Printf("Update Grade %d: (%d): ", i+1, student.Grades[i])
+				for {
+					var tempNumber = utils.ReadString("")
+					if tempNumber == "" {
+						fmt.Println("Kept...")
+						break
+					}
+					finalNumber, err := strconv.Atoi(tempNumber)
+					if err != nil {
+						fmt.Println("You must enter an integer!")
+						continue
+					} else {
+						(*student).Grades[i] = finalNumber
+						break
+					}
+				}
+
+			}
+			break
+		}
+	}
+	fmt.Print("Student updated. ")
 	utils.PauseProgram()
 }

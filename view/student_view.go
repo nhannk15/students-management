@@ -27,19 +27,16 @@ func ViewStudentMenu() {
 
 		case 2:
 			fmt.Print("\033[H\033[2J")
-
 			fmt.Println("Student deleted")
 		case 3:
 			fmt.Print("\033[H\033[2J")
-
-			fmt.Println("Student updated")
+			service.UpdateStudent()
 		case 4:
 			fmt.Print("\033[H\033[2J")
 			service.ListStudent()
 			fmt.Print("\033[H\033[2J")
 		case 5:
 			fmt.Print("\033[H\033[2J")
-
 			fmt.Println("Student found")
 		case 6:
 			return
