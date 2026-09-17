@@ -6,6 +6,8 @@ import (
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/google/uuid"
 )
 
 func ClearConsole() {
@@ -15,6 +17,11 @@ func ClearConsole() {
 func PauseProgram() {
 	fmt.Print("Press 'Enter' to continue...")
 	fmt.Scanf("%d")
+	ClearConsole()
+}
+
+func GenerateId() string {
+	return uuid.New().String()
 }
 
 func ReadInt(message string) int {
@@ -36,6 +43,27 @@ func ReadInt(message string) int {
 		}
 
 		return realNumber
+	}
+
+}
+
+func ReadString(message string) string {
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Print(message)
+	for {
+		tempString, err := reader.ReadString('\n')
+		tempString = strings.TrimSpace(tempString)
+		if err != nil {
+			fmt.Print("Error occured, please try again: ")
+			continue
+		}
+
+		if tempString == "" {
+			fmt.Print("Must contain at least one character, please try again: ")
+			continue
+		}
+
+		return tempString
 	}
 
 }

@@ -2,11 +2,15 @@ package main
 
 import (
 	"fmt"
+	"nhannkl/demo-golang/library"
 	"nhannkl/demo-golang/service"
 	"nhannkl/demo-golang/utils"
 )
 
 func main() {
+	//--- This thing has already been a Pointer! Check the Constructor
+	library := library.NewLibrary()
+
 	utils.ClearConsole()
 	for {
 		fmt.Println("===== Library Management System =====")
@@ -21,13 +25,15 @@ func main() {
 		fmt.Println("9. Exit.")
 		choice := utils.ReadInt("---> Enter your choice: ")
 
+		utils.ClearConsole()
+
 		switch choice {
 		case 1:
-			if err := service.AddBook(); err != nil {
+			if err := service.AddBook(library); err != nil {
 				fmt.Printf("Error occured when adding book: %v \n", err)
 			}
 		case 2:
-			if err := service.ListBooks(); err != nil {
+			if err := service.ListBooks(library); err != nil {
 				fmt.Printf("Error occured when listing books: %v \n", err)
 			}
 		case 3:
