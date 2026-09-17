@@ -3,17 +3,20 @@ package library
 import (
 	"fmt"
 	"nhannkl/demo-golang/model"
+	"time"
 )
 
 type Library struct {
-	Book      map[string]model.Book
-	Borrowers map[string]model.Borrower
+	Book         map[string]model.Book
+	Borrowers    map[string]model.Borrower
+	Transactions map[string]model.Transaction
 }
 
 func NewLibrary() *Library {
 	return &Library{
-		Book:      make(map[string]model.Book),
-		Borrowers: make(map[string]model.Borrower),
+		Book:         make(map[string]model.Book),
+		Borrowers:    make(map[string]model.Borrower),
+		Transactions: make(map[string]model.Transaction),
 	}
 }
 
@@ -57,4 +60,36 @@ func (library *Library) ListBorrowersStore() []model.Borrower {
 	}
 
 	return borrowers
+}
+
+func (library *Library) BorrowBookStore(transactionId, borrowerEmail, bookId string) error {
+
+	book, bookExists := (*library).Book[bookId]
+	if !bookExists {
+		return fmt.Errorf("Book didn't exist")
+	}
+
+	if book.IsBorrowed {
+		return fmt.Errorf("Book has been borrowed")
+	}
+
+	_, borrowerExists := (*library).Borrowers[borrowerEmail]
+	if !borrowerExists {
+		return fmt.Errorf("Borrower didn't exist")
+	}
+
+	//--- Reassign
+	book.IsBorrowed = true
+	(*library).Book[bookId] = book
+
+	(*library).Transactions[transactionId] = model.Transaction{
+		Id:            transactionId,
+		BorrowerEmail: borrowerEmail,
+		BookId:        bookId,
+		BorrowDate:    time.Now(),
+	}
+
+	fmt.Printf("%+v\n", (*library).Transactions[transactionId])
+
+	return nil
 }

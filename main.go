@@ -45,7 +45,7 @@ func main() {
 				fmt.Printf("Error occured when listing borrowers: %v \n", err)
 			}
 		case 5:
-			if err := service.BorrowBook(); err != nil {
+			if err := service.BorrowBook(library); err != nil {
 				fmt.Printf("Error occured when borrowing book: %v \n", err)
 			}
 		case 6:

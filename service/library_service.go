@@ -63,7 +63,16 @@ func ListBorrowers(library *library.Library) error {
 	return nil
 }
 
-func BorrowBook() error {
+func BorrowBook(library *library.Library) error {
+	transactionId := utils.GenerateId()
+	borrowerEmail := utils.ReadString("Enter borrower email: ")
+	bookId := utils.ReadString("Enter book id: ")
+
+	if err := (*library).BorrowBookStore(transactionId, borrowerEmail, bookId); err != nil {
+		return err
+	}
+
+	fmt.Println("Borrower successfully borrowed a book.")
 	return nil
 }
 
