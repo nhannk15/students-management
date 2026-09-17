@@ -35,6 +35,11 @@ func AddStudent() {
 }
 
 func ListStudent() {
+	if len(studentList) == 0 {
+		fmt.Println("Empty student list")
+		utils.PauseProgram()
+		return
+	}
 	fmt.Printf("%-10v | %-10v | %-10v | %-10v \n",
 		"Id",
 		"Name",
@@ -103,5 +108,49 @@ func UpdateStudent() {
 		}
 	}
 	fmt.Print("Student updated. ")
+	utils.PauseProgram()
+}
+
+func DeleteStudent() {
+
+	var id int = utils.ReadInt("Enter the student id you want to update: ")
+	var index int = slices.IndexFunc(studentList, func(student student.Student) bool {
+		return student.Id == id
+	})
+	if index == -1 {
+		fmt.Println("The student you want does not exist")
+	} else {
+		studentList = slices.DeleteFunc(studentList, func(student student.Student) bool {
+			return student.Id == id
+		})
+		fmt.Print("Student deleted. ")
+	}
+	utils.PauseProgram()
+
+}
+
+func FindStudent() {
+	var id int = utils.ReadInt("Enter the student id you want to update: ")
+	var index int = slices.IndexFunc(studentList, func(student student.Student) bool {
+		return student.Id == id
+	})
+	if index == -1 {
+		fmt.Println("The student you want does not exist")
+	} else {
+		var student = studentList[index]
+		fmt.Printf("%-10v | %-10v | %-10v | %-10v \n",
+			"Id",
+			"Name",
+			"Class Name",
+			"Average",
+		)
+		fmt.Printf("%-10v | %-10v | %-10v | %-10v \n",
+			student.Id,
+			student.Name,
+			student.ClassName,
+			student.CalculateAverageGrades(),
+		)
+		fmt.Print("Student found. ")
+	}
 	utils.PauseProgram()
 }

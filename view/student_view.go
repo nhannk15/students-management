@@ -27,7 +27,7 @@ func ViewStudentMenu() {
 
 		case 2:
 			fmt.Print("\033[H\033[2J")
-			fmt.Println("Student deleted")
+			service.DeleteStudent()
 		case 3:
 			fmt.Print("\033[H\033[2J")
 			service.UpdateStudent()
@@ -37,7 +37,7 @@ func ViewStudentMenu() {
 			fmt.Print("\033[H\033[2J")
 		case 5:
 			fmt.Print("\033[H\033[2J")
-			fmt.Println("Student found")
+			service.FindStudent()
 		case 6:
 			return
 		default:
