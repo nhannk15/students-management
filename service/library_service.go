@@ -76,14 +76,44 @@ func BorrowBook(library *library.Library) error {
 	return nil
 }
 
-func ListBorrowHistory() error {
+func ListBorrowHistory(library *library.Library) error {
+	borrowerEmail := utils.ReadString("Enter borrower email: ")
+	transactions := (*library).BorrowHistoryStore(borrowerEmail)
+	if len(transactions) == 0 {
+		fmt.Println("Borrower hasn't triggered any transaction.")
+	} else {
+		for _, transaction := range transactions {
+			returnStatus := "Not yet"
+			if !transaction.ReturnDate.IsZero() {
+				returnStatus = transaction.ReturnDate.Format("02/01/2006")
+			}
+			fmt.Printf("TransactionId: %s - Book: %s - Date Borrowed: %v - Date Returned: %v\n",
+				transaction.Id, transaction.BookId, transaction.BorrowDate.Format("02/01/2006"), returnStatus)
+		}
+	}
 	return nil
 }
 
-func ReturnBook() error {
+func ReturnBook(library *library.Library) error {
+	transactionId := utils.ReadString("Enter Transaction Id: ")
+	if err := (*library).ReturnBookStore(transactionId); err != nil {
+		return err
+	}
+
+	fmt.Println("Successfully returned a book")
 	return nil
 }
 
-func SearchBooks() error {
+func SearchBooks(library *library.Library) error {
+	searchValue := utils.ReadString("Enter search value: ")
+	books := (*library).SearchBookStore(searchValue)
+
+	for _, value := range books {
+		var bookStatus string = "Available"
+		if value.IsBorrowed {
+			bookStatus = "Borrowed"
+		}
+		fmt.Printf("Id: %s - Title: %s - Author: %s - %s\n", value.Id, value.Title, value.Author, bookStatus)
+	}
 	return nil
 }

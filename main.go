@@ -49,15 +49,15 @@ func main() {
 				fmt.Printf("Error occured when borrowing book: %v \n", err)
 			}
 		case 6:
-			if err := service.ListBorrowHistory(); err != nil {
+			if err := service.ListBorrowHistory(library); err != nil {
 				fmt.Printf("Error occured when listing borrowing history: %v \n", err)
 			}
 		case 7:
-			if err := service.ReturnBook(); err != nil {
+			if err := service.ReturnBook(library); err != nil {
 				fmt.Printf("Error occured when returning book: %v \n", err)
 			}
 		case 8:
-			if err := service.SearchBooks(); err != nil {
+			if err := service.SearchBooks(library); err != nil {
 				fmt.Printf("Error occured when searching books: %v \n", err)
 			}
 		case 9:

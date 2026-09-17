@@ -3,6 +3,7 @@ package library
 import (
 	"fmt"
 	"nhannkl/demo-golang/model"
+	"strings"
 	"time"
 )
 
@@ -89,7 +90,38 @@ func (library *Library) BorrowBookStore(transactionId, borrowerEmail, bookId str
 		BorrowDate:    time.Now(),
 	}
 
-	fmt.Printf("%+v\n", (*library).Transactions[transactionId])
+	return nil
+}
+
+func (library *Library) BorrowHistoryStore(borrowerEmail string) []model.Transaction {
+	transactions := make([]model.Transaction, 0, len((*library).Transactions))
+	for _, transaction := range (*library).Transactions {
+		if transaction.BorrowerEmail == borrowerEmail {
+			transactions = append(transactions, transaction)
+		}
+	}
+	return transactions
+}
+
+func (library *Library) ReturnBookStore(transactionId string) error {
+	transaction, transactionExists := (*library).Transactions[transactionId]
+	if !transactionExists {
+		return fmt.Errorf("Transaction %s doesn't exist.", transactionId)
+	}
+
+	transaction.ReturnDate = time.Now()
+	(*library).Transactions[transactionId] = transaction
 
 	return nil
+}
+
+func (library *Library) SearchBookStore(searchValue string) []model.Book {
+	books := make([]model.Book, 0, len((*library).Book))
+	for _, book := range (*library).Book {
+		if strings.Contains(book.Title, searchValue) || strings.Contains(book.Author, searchValue) {
+			books = append(books, book)
+		}
+	}
+
+	return books
 }
