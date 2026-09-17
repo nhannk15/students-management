@@ -8,42 +8,34 @@ import (
 	"strings"
 )
 
-var reader = bufio.NewReader(os.Stdin)
-
-func ReadInt(message string) int {
-	fmt.Printf("%s", message)
-	for {
-		input, err := reader.ReadString('\n')
-		if err != nil {
-			fmt.Println("Error occured...")
-			continue
-		}
-		input = strings.TrimSpace(input)
-		number, err := strconv.Atoi(input)
-		if err != nil {
-			fmt.Println("You must enter an integer")
-			continue
-		}
-		return number
-
-	}
-}
-
-func ReadString(message string) string {
-	fmt.Printf("%s", message)
-	for {
-		input, err := reader.ReadString('\n')
-		if err != nil {
-			fmt.Println("Error occured...")
-			continue
-		}
-		input = strings.TrimSpace(input)
-		return input
-	}
+func ClearConsole() {
+	fmt.Print("\033[H\033[2J")
 }
 
 func PauseProgram() {
-	fmt.Printf("Press 'Enter' to continue...")
-	fmt.Scanf("%s")
-	fmt.Print("\033[H\033[2J")
+	fmt.Print("Press 'Enter' to continue...")
+	fmt.Scanf("%d")
+}
+
+func ReadInt(message string) int {
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Print(message)
+	for {
+		tempNumber, err := reader.ReadString('\n')
+		tempNumber = strings.TrimSpace(tempNumber)
+		if err != nil {
+			fmt.Print("Error occured, please enter again: ")
+			continue
+		}
+
+		realNumber, err := strconv.Atoi(tempNumber)
+		if err != nil {
+			fmt.Println(err)
+			fmt.Print("You must enter an Integer, please enter again: ")
+			continue
+		}
+
+		return realNumber
+	}
+
 }
