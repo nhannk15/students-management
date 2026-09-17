@@ -6,12 +6,14 @@ import (
 )
 
 type Library struct {
-	Book map[string]model.Book
+	Book      map[string]model.Book
+	Borrowers map[string]model.Borrower
 }
 
 func NewLibrary() *Library {
 	return &Library{
-		Book: make(map[string]model.Book),
+		Book:      make(map[string]model.Book),
+		Borrowers: make(map[string]model.Borrower),
 	}
 }
 
@@ -32,4 +34,27 @@ func (library *Library) AddBookToStore(id, title, author string) error {
 
 func (library *Library) ListBooksStore() map[string]model.Book {
 	return (*library).Book
+}
+
+func (library *Library) AddBorrowerToStore(id, name, email string) error {
+	if _, exists := (*library).Borrowers[email]; exists {
+		return fmt.Errorf("Duplicated email.")
+	}
+
+	(*library).Borrowers[email] = model.Borrower{
+		Id:    id,
+		Name:  name,
+		Email: email,
+	}
+
+	return nil
+}
+
+func (library *Library) ListBorrowersStore() []model.Borrower {
+	borrowers := make([]model.Borrower, 0, len((*library).Borrowers))
+	for _, value := range (*library).Borrowers {
+		borrowers = append(borrowers, value)
+	}
+
+	return borrowers
 }

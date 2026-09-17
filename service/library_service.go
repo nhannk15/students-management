@@ -15,7 +15,7 @@ func AddBook(library *library.Library) error {
 		return err
 	}
 
-	fmt.Printf("%s %s %s\n", id, title, author)
+	fmt.Println("Successfully added a new Book")
 	return nil
 }
 
@@ -36,11 +36,30 @@ func ListBooks(library *library.Library) error {
 	return nil
 }
 
-func AddBorrower() error {
+func AddBorrower(library *library.Library) error {
+	id := utils.GenerateId()
+	name := utils.ReadString("Enter name: ")
+	email := utils.ReadString("Enter email: ")
+
+	if err := (*library).AddBorrowerToStore(id, name, email); err != nil {
+		return err
+	}
+
+	fmt.Println("Successfully added a new Borrower")
+
 	return nil
 }
 
-func ListBorrowers() error {
+func ListBorrowers(library *library.Library) error {
+	borrowers := (*library).ListBorrowersStore()
+	if len(borrowers) == 0 {
+		fmt.Println("Empty borrower list.")
+		return nil
+	}
+
+	for _, value := range borrowers {
+		fmt.Printf("Id: %s - Name: %s - Email: %s\n", value.Id, value.Name, value.Email)
+	}
 	return nil
 }
 

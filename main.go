@@ -37,11 +37,11 @@ func main() {
 				fmt.Printf("Error occured when listing books: %v \n", err)
 			}
 		case 3:
-			if err := service.AddBorrower(); err != nil {
+			if err := service.AddBorrower(library); err != nil {
 				fmt.Printf("Error occured when adding borrower: %v \n", err)
 			}
 		case 4:
-			if err := service.ListBorrowers(); err != nil {
+			if err := service.ListBorrowers(library); err != nil {
 				fmt.Printf("Error occured when listing borrowers: %v \n", err)
 			}
 		case 5:
