@@ -20,13 +20,18 @@ func AddBook(library *library.Library) error {
 }
 
 func ListBooks(library *library.Library) error {
-	if len((*library).Book) == 0 {
+	books := (*library).ListBooksStore()
+	if len(books) == 0 {
 		fmt.Println("Empty library!")
 		return nil
 	}
 
 	for _, value := range (*library).Book {
-		fmt.Printf("Id: %s - Title: %s - Author: %s\n", value.Id, value.Title, value.Author)
+		var bookStatus string = "Available"
+		if value.IsBorrowed {
+			bookStatus = "Borrowed"
+		}
+		fmt.Printf("Id: %s - Title: %s - Author: %s - %s\n", value.Id, value.Title, value.Author, bookStatus)
 	}
 	return nil
 }

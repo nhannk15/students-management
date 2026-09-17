@@ -21,10 +21,15 @@ func (library *Library) AddBookToStore(id, title, author string) error {
 	}
 
 	(*library).Book[id] = model.Book{
-		Id:     id,
-		Title:  title,
-		Author: author,
+		Id:         id,
+		Title:      title,
+		Author:     author,
+		IsBorrowed: false,
 	}
 
 	return nil
+}
+
+func (library *Library) ListBooksStore() map[string]model.Book {
+	return (*library).Book
 }
